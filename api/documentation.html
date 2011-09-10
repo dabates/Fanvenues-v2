@@ -1,0 +1,1428 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="author" content="Oliver Oxenham">
+		<meta name="description" content="fanvenues - 3D interactive seating maps." />
+		<meta name="copyright" content="Peekspy Pte Ltd, 2010. All rights reserved." />
+		<meta name="robots" content="#" />
+		<meta name="keywords" content="fanvenues, 3D interactive seating maps, 3D seat maps, seat maps, interactive, 3D seat views, venues, sports, concerts, tickets, online tickets, 3D views" />
+		<meta http-equiv="expires" content="#" />
+		<meta http-equiv="cache-control" content="#" />
+		<link rel="shortcut icon" type="image/x-icon" href="http://www.fanvenues.com/images/favicon.ico" />
+		<title>Fanvenues - API Documentation</title>
+		<link rel="stylesheet" href="http://static.jquery.com/files/rocker/css/reset.css" type="text/css" />
+		<link rel="stylesheet" href="http://static.jquery.com/files/rocker/css/screen.css" type="text/css" />
+		<link rel="stylesheet" href="css/mainjquerydoc.css" type="text/css" />		
+		<link rel="stylesheet" type="text/css" href="http://jquery.com/files/social/jquery.tabs.css" />
+		<!--[if lte IE 7]>
+		<link rel="stylesheet" href="http://jquery.com/files/social/jquery.tabs-ie.css" type="text/css" media="projection, screen"/>
+		<![endif]-->
+		<link rel="stylesheet" href="css/slimbox2.css" type="text/css" />
+		<link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.8.4.custom.css" type="text/css" />
+		<link rel="stylesheet" href="css/fvmap.css" type="text/css" />
+
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.3&sensor=false"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="js/slimbox2.js"></script>
+		<script type="text/javascript" src="js/jquery.fanvenues.min.js"></script>	
+		<script src="http://jquery.com/files/social/js/jquery.tabs.js"></script>
+		<script type="text/javascript" src="http://static.jquery.com/files/rocker/scripts/custom.js"></script>
+		
+		<!-- Head Scripts -->
+	</head>
+	<body id="jq-interior"  class="mediawiki ns-0 ltr">
+
+	<div id="jq-siteContain">
+			<div id="jq-header">
+				<a href="http://www.fanvenues.com"><img src="images/fvlogo.png"></a>
+				<h1>Documentation API</h1>
+			</div><!-- /#header -->
+
+			<div id="jq-content" class="jq-clearfix">
+
+				<div id="jq-primaryContent" style="width:800px;">
+		<div id="column-content">
+	<div id="docs-content">
+		<a name="top" id="top"></a>
+		<h1 class="firstHeading">FANVENUES / API / 2.2.3</h1>
+		<div id="bodyContent">
+			
+<ul class="UIAPIPlugin-toc">
+<li><a href="#overview">Overview</a></li>
+<li><a href="#options">Options</a></li>
+<li><a href="#events">Events</a></li>
+<li><a href="#methods">Methods</a></li>
+<li><a href="#theming">Theming</a></li>
+<li><a href="#download">Download</a></li>
+</ul>
+<div class="UIAPIPlugin">
+  <div id="overview">
+    <h2 class="top-header">Overview</h2>
+    <div id="overview-main">
+				<p>
+		The jQuery Fanvenues plugin is a full featured Javascript API targeted for ticket brokers selling sports or concerts tickets on their website. The plugin turns selected elements into an interactive customizable venue map with the capability of showing 3D views from every section. Depending on the broker's exchange and requested venue id and event id, Fanvenues plugin delivers the appropriate map. Fanvenues maps consist of a growing list of NBA, MLB, NFL, NHL, NCAA, US OPEN TENNIS and CONCERT venues.
+				</p>
+				<p>
+		The plugin reads the broker's ticket list from a JSON parameter option passed at initialization. The map automatically interacts with the ticket list and caters for different section naming conventions used within the list. Section names that cannot be mapped are pushed to the 'unmapped' section.
+				</p>
+				<pre>
+ Date created: 2010-08-02
+ Date updated: 2011-09-09
+ Latest version: 2.2.3
+ 2.2.3 : resolved price filtering bug where sections filtered became unfiltered after a mouseout event.
+ 		 changed use of 'for..in' to standard for-loop to loop through arrays.
+ 2.2.2 : resolved bug in IE9 ajax requests preventing calls to fanvenues server because of missing 'onprogress' function.
+ 2.2.1 : added bind event 'fvmapReady' - triggered when the map is loaded and ready to use.
+ 		 updated online documentation api.
+ 2.2.0 : worked out some browser compatibilities issues. now opens fine in Firefox 3.5 and above.
+ 2.1.9 : solved bug in IE9 ajax requests that is not consistent with XMLHttpRequest
+ 2.1.8 : change jsonp requests to post requests for quicker data transfer especially with extremely large ticket lists.
+ 2.1.7 : resolved bug - clear all previous event bindings before attaching new ones
+ 2.1.6 : changed spic and lpic to pic. Original image size is 1400x752. To get a resized image, append argument 'size=<width>x<height>'.
+ 2.1.5 : improved 3D views (better quality) for Fanvenues v2.1.5 and above.
+ 2.1.4 : fanvenues now using new tile server fanvenues3.
+ 2.1.3 : removed the 'arrow button' which appeared when action buttons (fullscreen, reset and print) are enabled.
+ 2.1.2 : added 'scrollWheelZoom' to options. Default set to 'false' to avoid zooming in and out with mouse scrollwheel.
+		 added public methods 'getLargeImage', 'getSmallImage' and 'getAllSections'.
+		 disabled right-clicking on the ticket row.
+		 removed bind event 'fvmapSectionClick'.
+		 added bind event 'fvmapSectionDeselect' (triggered when a section is deselected) and 'fvmapSectionSelect' (triggered when a section is selected).
+ 2.1.1 : changed 'rowsSelector' to 'rowSelector'.
+         changed id 'priceSliderAmount' to class.
+		 added private method for loading priceFilter.
+		 changed priceFilterContainer from ul to div.
+ 2.1.0 : Added jQuery section and row selectors as options (removed the old way of interacting with ticket list).
+		 Added public method wrappers for focusSection, blurSection, clickSection.
+		 Changed all event names to camel-case: fvmapSectionBlur, fvmapSectionSelect, fvmapSectionDeselect, 
+		 										fvmapSectionFocus, fvmapNotAvailable
+		 Added ul elements as parents of li elements.
+		 Removed 'fvmsg' div.
+		 Changed price slider id to class.
+		 Standardized class names for price slider.
+		 Now passing current version to Fanvenues server for appropriate response.
+ 2.0.5 : added new bind event: 'fvmap-section-blur' for when mouse moves out of a section
+ 2.0.4 : convert ticket price to string
+ 2.0.3 : set streetViewControl to false
+ 2.0.2 : added new bind events: 'fvmap-section-selected', 'fvmap-section-deselect', 'fvmap-section-hover'
+ 2.0.1 : changed bind event from 'enlarge-image' to 'fvmap-enlarge-image'.
+ 2.0.0 : Fanvenues released.
+				</pre>
+    </div>
+    <div id="overview-dependencies">
+        <h3>Dependencies</h3>
+		<ul>
+			<li>jQuery v1.4.2 (or newer)</li>
+			<li>jQuery UI v1.8.4 (or newer)</li>
+			<li>Google Maps API v3.3 <b>** A bug in latest version of Google Maps API (>= 3.4) forces us to use version 3.3 **</b></li>
+		</ul>
+    </div>
+    <div id="overview-example1">
+        <h3>Example</h3>
+        <div id="overview-example" class="example">
+			<ul>
+				<li><a href="#demo"><span>Demo</span></a></li>
+				<li><a href="#source"><span>View Source</span></a></li>
+			</ul>
+			<div id="demo" class="tabs-container" style="width:800px;" rel="">
+				<p>A simple Fanvenues interactive map featuring United Center (NBA).<br /></p>
+				<table width=750><tr><td width=550><div id="fvmap"></div></td><td style="vertical-align:top;" valign="top"><div id="thumbnail"></div></td></tr></table>
+<pre>
+$(&#39;#fvmap&#39;).fanvenues({
+	mapSet:&#39;fv&#39;,
+	mapId:&#39;1004&#39;,                                                                                           
+	interactWithTicketList: false,                                                                                  
+	ticketList:{                                                                                                    
+		&#39;items&#39;:[                                                                                           
+			{id:&#39;1231&#39;,section:&#39;201&#39;,row:&#39;10&#39;,price:&#39;110.00&#39;,notes:&#39;n/a&#39;},  
+			{id:&#39;1232&#39;,section:&#39;201&#39;,row:&#39;12&#39;,price:&#39;24.00&#39;,notes:&#39;n/a&#39;},   
+			{id:&#39;1233&#39;,section:&#39;CL 202&#39;,row:&#39;4&#39;,price:&#39;150.00&#39;,notes:&#39;n/a&#39;},
+			{id:&#39;1234&#39;,section:&#39;117&#39;,row:&#39;4&#39;,price:&#39;210.00&#39;,notes:&#39;n/a&#39;},   
+			{id:&#39;1235&#39;,section:&#39;223&#39;,row:&#39;4&#39;,price:&#39;110.00&#39;,notes:&#39;n/a&#39;},   
+			{id:&#39;1236&#39;,section:&#39;316&#39;,row:&#39;4&#39;,price:&#39;115.00&#39;,notes:&#39;n/a&#39;},   
+			{id:&#39;1237&#39;,section:&#39;107&#39;,row:&#39;4&#39;,price:&#39;300.00&#39;,notes:&#39;n/a&#39;},   
+			{id:&#39;1238&#39;,section:&#39;101&#39;,row:&#39;4&#39;,price:&#39;320.00&#39;,notes:&#39;n/a&#39;},   
+			{id:&#39;1239&#39;,section:&#39;213&#39;,row:&#39;4&#39;,price:&#39;80.00&#39;,notes:&#39;n/a&#39;},    
+			{id:&#39;1240&#39;,section:&#39;307&#39;,row:&#39;4&#39;,price:&#39;100.00&#39;,notes:&#39;n/a&#39;},   
+			{id:&#39;1241&#39;,section:&#39;318&#39;,row:&#39;4&#39;,price:&#39;130.00&#39;,notes:&#39;n/a&#39;},   
+			{id:&#39;1242&#39;,section:&#39;112&#39;,row:&#39;4&#39;,price:&#39;510.00&#39;,notes:&#39;n/a&#39;},   
+			{id:&#39;1243&#39;,section:&#39;203&#39;,row:&#39;4&#39;,price:&#39;110.00&#39;,notes:&#39;n/a&#39;}	
+		]                                                                                                           
+	}                                                                                                               
+})                                                                                                                  
+.bind(&#39;fvmapReady&#39;, function() {                                                                   
+	// fvmap is now loaded and ready to use                                                  
+})                                                                                                                  
+.bind(&#39;fvmapNotAvailable&#39;, function() {                                                                   
+	$(this).replaceWith(&#39;Sorry! Map could not be found.&#39;);                                                  
+})                                                                                                                  
+.bind(&#39;fvmapEnlargeImage&#39;, function(obj, url, section) {
+	// display large image section view                                                   
+	$.slimbox(url, section, {overlayOpacity: 0.5})
+})
+.bind(&#39;fvmapSectionFocus&#39;, function(obj, smallImageUrl, section) {
+	// display thumbnail section view
+	$(&#39;#thumbnail&#39;)
+		.html(&#39;&lt;img src="&#39;+smallImageUrl+&#39;" /&gt;&#39;);
+})
+.bind(&#39;fvmapSectionBlur&#39;, function(obj, smallImageUrl, section) {
+	// perform action when section loses focus (mouse out)
+	// thumbnail image url and section name are passed in
+})
+.bind(&#39;fvmapSectionSelect&#39;, function(obj, smallImageUrl, section) {
+	// perform action on section select
+	// thumbnail image url and section name are passed in
+})
+.bind(&#39;fvmapSectionDeselect&#39;, function(obj, smallImageUrl, section) {
+	// perform action on section deselect
+	// thumbnail image url and section name are passed in
+});
+</pre>                                                                                                              
+			</div>                                                                                                  
+			<div id="source" style="width:800px;" class="tabs-container">                                           
+<pre>                                                                                                               
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;styles/slimbox2.css&quot; type=&quot;text/css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;styles/ui-lightness/jquery-ui-1.8.4.custom.css&quot; type=&quot;text/css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;styles/fanvenues.css&quot; type=&quot;text/css&quot; /&gt;
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;http://maps.google.com/maps/api/js?v=3.3&amp;sensor=false&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;scripts/slimbox2.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;scripts/jquery.fanvenues.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+	$(document).ready(function() {
+	 	$(&#39;#fvmap&#39;).fanvenues({
+	 		mapSet:&#39;fv&#39;,
+	 		mapId:&#39;1004&#39;,
+	 		zoomMapButton: true,
+	 		fullscreenMapButton: true,	
+	 		resetMapButton: true,
+	 		printMapButton: true,
+	 		priceFilter: true,
+	 		interactWithTicketList: false,
+	 		ticketList:{
+	 			&#39;items&#39;:[
+	 				{id:&#39;1231&#39;,section:&#39;201&#39;,row:&#39;10&#39;,price:&#39;110.00&#39;,notes:&#39;n/a&#39;},
+	 				{id:&#39;1232&#39;,section:&#39;201&#39;,row:&#39;12&#39;,price:&#39;24.00&#39;,notes:&#39;n/a&#39;},
+	 				{id:&#39;1233&#39;,section:&#39;CL 202&#39;,row:&#39;4&#39;,price:&#39;150.00&#39;,notes:&#39;n/a&#39;},
+	 				{id:&#39;1234&#39;,section:&#39;117&#39;,row:&#39;4&#39;,price:&#39;210.00&#39;,notes:&#39;n/a&#39;},
+	 				{id:&#39;1235&#39;,section:&#39;223&#39;,row:&#39;4&#39;,price:&#39;110.00&#39;,notes:&#39;n/a&#39;},
+	 				{id:&#39;1236&#39;,section:&#39;316&#39;,row:&#39;4&#39;,price:&#39;115.00&#39;,notes:&#39;n/a&#39;},
+	 				{id:&#39;1237&#39;,section:&#39;107&#39;,row:&#39;4&#39;,price:&#39;300.00&#39;,notes:&#39;n/a&#39;},
+	 				{id:&#39;1238&#39;,section:&#39;101&#39;,row:&#39;4&#39;,price:&#39;320.00&#39;,notes:&#39;n/a&#39;},
+	 				{id:&#39;1239&#39;,section:&#39;213&#39;,row:&#39;4&#39;,price:&#39;80.00&#39;,notes:&#39;n/a&#39;},
+	 				{id:&#39;1240&#39;,section:&#39;307&#39;,row:&#39;4&#39;,price:&#39;100.00&#39;,notes:&#39;n/a&#39;},
+	 				{id:&#39;1241&#39;,section:&#39;318&#39;,row:&#39;4&#39;,price:&#39;130.00&#39;,notes:&#39;n/a&#39;},
+	 				{id:&#39;1242&#39;,section:&#39;112&#39;,row:&#39;4&#39;,price:&#39;510.00&#39;,notes:&#39;n/a&#39;},
+	 				{id:&#39;1243&#39;,section:&#39;203&#39;,row:&#39;4&#39;,price:&#39;110.00&#39;,notes:&#39;n/a&#39;}					
+	 			]
+	 		}
+	 	})
+		.bind(&#39;fvmapReady&#39;, function() {                                                                   
+			// fvmap is now loaded and ready to use                                                  
+		})     
+	 	.bind(&#39;fvmapNotAvailable&#39;, function() {
+			$(this).replaceWith(&#39;Sorry! Map could not be found.&#39;);
+	 	})
+	 	.bind(&#39;fvmapEnlargeImage&#39;, function(obj, url, section) {
+			$.slimbox(url, section, {overlayOpacity: 0.5});
+	 	})
+		.bind(&#39;fvmapSectionFocus&#39;, function(obj, smallImageUrl, section) {
+			// display thumbnail section view
+			$(&#39;#thumbnail&#39;)
+				.html(&#39;&lt;img src="&#39;+smallImageUrl+&#39;" /&gt;&#39;);
+		})
+		.bind(&#39;fvmapSectionBlur&#39;, function(obj, smallImageUrl, section) {
+			// perform action when section loses focus (mouse out)
+			// thumbnail image url and section name are passed in
+		})		
+		.bind(&#39;fvmapSectionSelect&#39;, function(obj, smallImageUrl, section) {
+			// perform action on section select
+			// thumbnail image url and section name are passed in
+		})
+		.bind(&#39;fvmapSectionDeselect&#39;, function(obj, smallImageUrl, section) {
+			// perform action on section deselect
+			// thumbnail image url and section name are passed in
+		});
+	});
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&quot;fvmap&quot;&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+			</div>
+		</div>
+    </div>
+  </div> <!-- end tabs -->
+  <div id="options">
+    <h2 class="top-header">Options</h2>
+		<ul class="options-list">
+			<li class="option" id="option-defaultZoom">
+				<div class="option-header">
+					<h3 class="option-name">
+						<a href="#option-defaultZoom">defaultZoom</a>
+					</h3>
+					<dl>
+						<dt class="option-type-label">
+							Type:
+						</dt>
+						<dd class="option-type">
+							Number
+						</dd>
+						<dt class="option-default-label">
+							Default:
+						</dt>
+						<dd class="option-default">
+							2
+						</dd>
+					</dl>
+				</div>
+				<div class="option-description">
+					<p>
+						Sets the original zoom level for the current map. Zoom level ranges from 1 (closest) to 3 (furthest).
+					</p>
+				</div>
+				<div class="option-examples">
+					<h4>
+						Code examples
+					</h4>
+					<dl class="option-examples-list">
+						<dt>
+							Initialize a map with the <code>defaultZoom</code> option specified.
+						</dt>
+						<dd>
+							<pre>
+<code>$( "#map-selector" ).fanvenues({ defaultZoom: 2 });</code>
+		</pre>
+						</dd>
+					</dl>
+				</div>
+			</li>
+			<li class="option" id="option-height">
+				<div class="option-header">
+					<h3 class="option-name">
+						<a href="#option-height">height</a>
+					</h3>
+					<dl>
+						<dt class="option-type-label">
+							Type:
+						</dt>
+						<dd class="option-type">
+							Number, String
+						</dd>
+						<dt class="option-default-label">
+							Default:
+						</dt>
+						<dd class="option-default">
+							500
+						</dd>
+					</dl>
+				</div>
+				<div class="option-description">
+					<p>
+						Sets the original height of the map (default is 500 px). CSS styling (see below) however takes priority over this value. It will also accept a string value of the format '500px'.
+					</p>
+				</div>
+				<div class="option-examples">
+					<h4>
+						Code examples
+					</h4>
+					<dl class="option-examples-list">
+						<dt>
+							Initialize a map with the <code>height</code> option specified.
+						</dt>
+						<dd>
+							<pre>
+<code>$( "#map-selector" ).fanvenues({ height: 500 });</code>
+		</pre>
+						</dd>
+					</dl>
+				</div>
+			</li>
+				<li class="option" id="option-width">
+					<div class="option-header">
+						<h3 class="option-name">
+							<a href="#option-width">width</a>
+						</h3>
+						<dl>
+							<dt class="option-type-label">
+								Type:
+							</dt>
+							<dd class="option-type">
+								Number, String
+							</dd>
+							<dt class="option-default-label">
+								Default:
+							</dt>
+							<dd class="option-default">
+								500
+							</dd>
+						</dl>
+					</div>
+					<div class="option-description">
+						<p>
+							Sets the original width of the map (default is 500 px). CSS styling (see below) however takes priority over this value. It will also accept a string value of the format '500px'.
+						</p>
+					</div>
+					<div class="option-examples">
+						<h4>
+							Code examples
+						</h4>
+						<dl class="option-examples-list">
+							<dt>
+								Initialize a map with the <code>width</code> option specified.
+							</dt>
+							<dd>
+								<pre>
+<code>$( "#map-selector" ).fanvenues({ width: 500 });</code>
+			</pre>
+							</dd>
+						</dl>
+					</div>
+				</li>
+			<li class="option" id="option-mapSet">
+				<div class="option-header">
+					<h3 class="option-name">
+						<a href="#option-mapSet">mapSet</a>
+					</h3>
+					<dl>
+						<dt class="option-type-label">
+							Type:
+						</dt>
+						<dd class="option-type">
+							String
+						</dd>
+						<dt class="option-default-label">
+							Default:
+						</dt>
+						<dd class="option-default">
+							'fv'
+						</dd>
+					</dl>
+				</div>
+				<div class="option-description">
+					<p>
+						The mapSet refers to the exchange code being used by the broker. This is a necessary option as exchange map IDs are converted to Fanvenues map IDs to retrieve the appropriate map.
+					</p>
+					<p>
+						'fv' = 'Fanvenues map IDs',<br/>
+						'ei' = 'EventInventory map IDs',<br/>
+						'tn1' = 'TicketNetwork XML map IDs',<br/>
+						'tt' = 'TicketTechnology map IDs'
+					</p>
+				</div>
+				<div class="option-examples">
+					<h4>
+						Code examples
+					</h4>
+					<dl class="option-examples-list">
+						<dt>
+							Initialize a map with the <code>mapSet</code> option specified.
+						</dt>
+						<dd>
+							<pre>
+<code>$( "#map-selector" ).fanvenues({ mapSet: 'ei' });</code>
+							</pre>
+						</dd>
+					</dl>
+				</div>
+			</li>
+			<li class="option" id="option-mapId">
+				<div class="option-header">
+					<h3 class="option-name">
+						<a href="#option-mapId">mapId</a>
+					</h3>
+					<dl>
+						<dt class="option-type-label">
+							Type:
+						</dt>
+						<dd class="option-type">
+							String
+						</dd>
+						<dt class="option-default-label">
+							Default:
+						</dt>
+						<dd class="option-default">
+							'1004'
+						</dd>
+					</dl>
+				</div>
+				<div class="option-description">
+					<p>
+						This option determines the map to be displayed based on its unique ID. 
+					</p>
+					<p>
+						For mapSet 'fv', mapId is '&lt;fv map ID&gt;'.<br/>
+						For mapSet 'ei', mapId is '&lt;ei venue ID&gt;,&lt;ei event ID&gt;'.<br/>
+						For mapSet 'tn1', mapId is '&lt;tn map ID&gt;,&lt;tn event name&gt;'.
+					</p>
+				</div>
+				<div class="option-examples">
+					<h4>
+						Code examples
+					</h4>
+					<dl class="option-examples-list">
+						<dt>
+							Initialize a map with the <code>mapId</code> option specified.
+						</dt>
+						<dd>
+							<pre>
+<code>$( "#map-selector" ).fanvenues({ mapId: '1004' });</code>
+		</pre>
+						</dd>
+					</dl>
+				</div>
+			</li>
+			<li class="option" id="option-ticketList">
+				<div class="option-header">
+					<h3 class="option-name">
+						<a href="#option-ticketList">ticketList</a>
+					</h3>
+					<dl>
+						<dt class="option-type-label">
+							Type:
+						</dt>
+						<dd class="option-type">
+							Object
+						</dd>
+						<dt class="option-default-label">
+							Default:
+						</dt>
+						<dd class="option-default">
+							null
+						</dd>
+					</dl>
+				</div>
+				<div class="option-description">
+					<p>
+						The list of tickets in JSON format. The ticketList object holds an 'items' array containing the list of tickets. Each ticket object has an 'id', a 'section', a 'row', a 'price' and some 'notes' if available.
+					</p>
+				</div>
+				<div class="option-examples">
+					<h4>
+						Code examples
+					</h4>
+					<dl class="option-examples-list">
+						<dt>
+							Initialize a map with the <code>ticketList</code> option specified.
+						</dt>
+						<dd>
+							<pre>
+<code>$( "#map-selector" ).fanvenues({ ticketList:{
+		'items': [
+			{id:'1241',section:'318',row:'4',price:'130.00',notes:'n/a'},
+			{id:'1242',section:'112',row:'4',price:'510.00',notes:'n/a'},
+			{id:'1243',section:'203',row:'4',price:'110.00',notes:'n/a'}
+		]}
+});</code>
+							</pre>
+						</dd>
+					</dl>
+				</div>
+			</li>
+			<li class="option" id="option-ticketListStyle">
+				<div class="option-header">
+					<h3 class="option-name">
+						<a href="#option-ticketListStyle">rowSelector</a>
+					</h3>
+					<dl>
+						<dt class="option-type-label">
+							Type:
+						</dt>
+						<dd class="option-type">
+							String
+						</dd>
+						<dt class="option-default-label">
+							Default:
+						</dt>
+						<dd class="option-default">
+							null
+						</dd>
+					</dl>
+				</div>
+				<div class="option-description">
+					<p>
+						This option specifies a jQuery selector string to select all rows within the ticket list.
+					</p>
+				</div>
+				<div class="option-examples">
+					<h4>
+						Code examples
+					</h4>
+					<dl class="option-examples-list">
+						<dt>
+							Initialize a map with the <code>rowSelector</code> option specified.
+						</dt>
+						<dd>
+							<pre>
+<code>$( "#map-selector" ).fanvenues({ rowSelector: '#tixlist div.tixlist-row' });</code>
+		</pre>
+						</dd>
+					</dl>
+				</div>
+			</li>
+			<li class="option" id="option-ticketListId">
+				<div class="option-header">
+					<h3 class="option-name">
+						<a href="#option-ticketListId">sectionSelector</a>
+					</h3>
+					<dl>
+						<dt class="option-type-label">
+							Type:
+						</dt>
+						<dd class="option-type">
+							String
+						</dd>
+						<dt class="option-default-label">
+							Default:
+						</dt>
+						<dd class="option-default">
+							null
+						</dd>
+					</dl>
+				</div>
+				<div class="option-description">
+					<p>
+						This option specifies a jQuery selector string to select all section names within the ticket list.
+					</p>
+				</div>
+				<div class="option-examples">
+					<h4>
+						Code examples
+					</h4>
+					<dl class="option-examples-list">
+						<dt>
+							Initialize a map with the <code>sectionSelector</code> option specified.
+						</dt>
+						<dd>
+							<pre>
+<code>$( "#map-selector" ).fanvenues({ sectionSelector: '.psection' });</code>
+		</pre>
+						</dd>
+					</dl>
+				</div>
+			</li>
+			<li class="option" id="option-rowsToHideOnFilterSelector">
+				<div class="option-header">
+					<h3 class="option-name">
+						<a href="#option-rowsToHideOnFilter">rowsToHideOnFilterSelector</a>
+					</h3>
+					<dl>
+						<dt class="option-type-label">
+							Type:
+						</dt>
+						<dd class="option-type">
+							String
+						</dd>
+						<dt class="option-default-label">
+							Default:
+						</dt>
+						<dd class="option-default">
+							null
+						</dd>
+					</dl>
+				</div>
+				<div class="option-description">
+					<p>
+						This option specifies a jQuery selector string to select certain rows to be hidden (for e.g. table header rows) whenever ticket filtering occurs.
+					</p>
+				</div>
+				<div class="option-examples">
+					<h4>
+						Code examples
+					</h4>
+					<dl class="option-examples-list">
+						<dt>
+							Initialize a map with the <code>rowsToHideOnFilterSelector</code> option specified.
+						</dt>
+						<dd>
+							<pre>
+<code>$( "#map-selector" ).fanvenues({ rowsToHideOnFilterSelector: '#tixlist .pHeader' });</code>
+		</pre>
+						</dd>
+					</dl>
+				</div>
+			</li>
+			<li class="option" id="option-ssize">
+				<div class="option-header">
+					<h3 class="option-name">
+						<a href="#option-ssize">ssize</a>
+					</h3>
+					<dl>
+						<dt class="option-type-label">
+							Type:
+						</dt>
+						<dd class="option-type">
+							String
+						</dd>
+						<dt class="option-default-label">
+							Default:
+						</dt>
+						<dd class="option-default">
+							'175x94'
+						</dd>
+					</dl>
+				</div>
+				<div class="option-description">
+					<p>
+						Sets the size of the thumbnail image.
+					</p>
+				</div>
+				<div class="option-examples">
+					<h4>
+						Code examples
+					</h4>
+					<dl class="option-examples-list">
+						<dt>
+							Initialize a map with the <code>ssize</code> option specified.
+						</dt>
+						<dd>
+							<pre>
+<code>$( "#map-selector" ).fanvenues({ ssize : '175x94' });</code>
+		</pre>
+						</dd>
+					</dl>
+				</div>
+			</li>
+			<li class="option" id="option-lsize">
+				<div class="option-header">
+					<h3 class="option-name">
+						<a href="#option-lsize">lsize</a>
+					</h3>
+					<dl>
+						<dt class="option-type-label">
+							Type:
+						</dt>
+						<dd class="option-type">
+							String
+						</dd>
+						<dt class="option-default-label">
+							Default:
+						</dt>
+						<dd class="option-default">
+							'745x400'
+						</dd>
+					</dl>
+				</div>
+				<div class="option-description">
+					<p>
+						Sets the size of the large image.
+					</p>
+				</div>
+				<div class="option-examples">
+					<h4>
+						Code examples
+					</h4>
+					<dl class="option-examples-list">
+						<dt>
+							Initialize a map with the <code>lsize</code> option specified.
+						</dt>
+						<dd>
+							<pre>
+<code>$( "#map-selector" ).fanvenues({ lsize: '745x400' });</code>
+		</pre>
+						</dd>
+					</dl>
+				</div>
+			</li>			
+			<li class="option" id="option-zoomMapButton">
+				<div class="option-header">
+					<h3 class="option-name">
+						<a href="#option-zoomMapButton">zoomMapButton</a>
+					</h3>
+					<dl>
+						<dt class="option-type-label">
+							Type:
+						</dt>
+						<dd class="option-type">
+							Boolean
+						</dd>
+						<dt class="option-default-label">
+							Default:
+						</dt>
+						<dd class="option-default">
+							true
+						</dd>
+					</dl>
+				</div>
+				<div class="option-description">
+					<p>
+						Sets the visibility of the zoom control buttons at the top left corner of the map. This button controls the zoom level of the map.
+					</p>
+				</div>
+				<div class="option-examples">
+					<h4>
+						Code examples
+					</h4>
+					<dl class="option-examples-list">
+						<dt>
+							Initialize a map with the <code>zoomMapButton</code> option specified.
+						</dt>
+						<dd>
+							<pre>
+<code>$( "#map-selector" ).fanvenues({ zoomMapButton: true });</code>
+		</pre>
+						</dd>
+					</dl>
+				</div>
+			</li>
+			<li class="option" id="option-fullscreenMapButton">
+				<div class="option-header">
+					<h3 class="option-name">
+						<a href="#option-fullscreenMapButton">fullscreenMapButton</a>
+					</h3>
+					<dl>
+						<dt class="option-type-label">
+							Type:
+						</dt>
+						<dd class="option-type">
+							Boolean
+						</dd>
+						<dt class="option-default-label">
+							Default:
+						</dt>
+						<dd class="option-default">
+							true
+						</dd>
+					</dl>
+				</div>
+				<div class="option-description">
+					<p>
+						Sets the visibility of the fullscreen / restore control button at the top right corner of the map. This button allows the map to be viewed in full screen.
+					</p>
+				</div>
+				<div class="option-examples">
+					<h4>
+						Code examples
+					</h4>
+					<dl class="option-examples-list">
+						<dt>
+							Initialize a map with the <code>fullscreenMapButton</code> option specified.
+						</dt>
+						<dd>
+							<pre>
+<code>$( "#map-selector" ).fanvenues({ fullscreenMapButton: true });</code>
+		</pre>
+						</dd>
+					</dl>
+				</div>
+			</li>
+			<li class="option" id="option-resetMapButton">
+				<div class="option-header">
+					<h3 class="option-name">
+						<a href="#option-resetMapButton">resetMapButton</a>
+					</h3>
+					<dl>
+						<dt class="option-type-label">
+							Type:
+						</dt>
+						<dd class="option-type">
+							Boolean
+						</dd>
+						<dt class="option-default-label">
+							Default:
+						</dt>
+						<dd class="option-default">
+							true
+						</dd>
+					</dl>
+				</div>
+				<div class="option-description">
+					<p>
+						Sets the visibility of the reset map control button at the top right corner of the map. This button centers the map and resets it to its original state (deselects any selected section if any).
+					</p>
+				</div>
+				<div class="option-examples">
+					<h4>
+						Code examples
+					</h4>
+					<dl class="option-examples-list">
+						<dt>
+							Initialize a map with the <code>resetMapButton</code> option specified.
+						</dt>
+						<dd>
+							<pre>
+<code>$( "#map-selector" ).fanvenues({ resetMapButton: true });</code>
+		</pre>
+						</dd>
+					</dl>
+				</div>
+			</li>
+			<li class="option" id="option-printMapButton">
+				<div class="option-header">
+					<h3 class="option-name">
+						<a href="#option-printMapButton">printMapButton</a>
+					</h3>
+					<dl>
+						<dt class="option-type-label">
+							Type:
+						</dt>
+						<dd class="option-type">
+							Boolean
+						</dd>
+						<dt class="option-default-label">
+							Default:
+						</dt>
+						<dd class="option-default">
+							true
+						</dd>
+					</dl>
+				</div>
+				<div class="option-description">
+					<p>
+						Sets the visibility of the print map control button at the top right corner of the map. This button allows the map to be printed out. 
+					</p>
+				</div>
+				<div class="option-examples">
+					<h4>
+						Code examples
+					</h4>
+					<dl class="option-examples-list">
+						<dt>
+							Initialize a map with the <code>printMapButton</code> option specified.
+						</dt>
+						<dd>
+							<pre>
+<code>$( "#map-selector" ).fanvenues({ printMapButton: true });</code>
+		</pre>
+						</dd>
+					</dl>
+				</div>
+			</li>
+			<li class="option" id="option-priceFilter">
+				<div class="option-header">
+					<h3 class="option-name">
+						<a href="#option-priceFilter">priceFilter</a>
+					</h3>
+					<dl>
+						<dt class="option-type-label">
+							Type:
+						</dt>
+						<dd class="option-type">
+							Boolean
+						</dd>
+						<dt class="option-default-label">
+							Default:
+						</dt>
+						<dd class="option-default">
+							true
+						</dd>
+					</dl>
+				</div>
+				<div class="option-description">
+					<p>
+						Sets the visibility of the price filter control at the bottom of the map. This control allows sections to be filtered based on the price range.
+					</p>
+				</div>
+				<div class="option-examples">
+					<h4>
+						Code examples
+					</h4>
+					<dl class="option-examples-list">
+						<dt>
+							Initialize a map with the <code>priceFilter</code> option specified.
+						</dt>
+						<dd>
+							<pre>
+<code>$( "#map-selector" ).fanvenues({ priceFilter: true });</code>
+		</pre>
+						</dd>
+					</dl>
+				</div>
+			</li>
+			<li class="option" id="option-interactWithTicketList">
+				<div class="option-header">
+					<h3 class="option-name">
+						<a href="#option-interactWithTicketList">interactWithTicketList</a>
+					</h3>
+					<dl>
+						<dt class="option-type-label">
+							Type:
+						</dt>
+						<dd class="option-type">
+							Boolean
+						</dd>
+						<dt class="option-default-label">
+							Default:
+						</dt>
+						<dd class="option-default">
+							true
+						</dd>
+					</dl>
+				</div>
+				<div class="option-description">
+					<p>
+						Determines whether interactivity between the ticket list and the map is on or off. If set to <code>true</code>, <code>ticketListStyle</code>, <code>ticketListId</code>, <code>ticketListRowClassName</code> and <code>sectionClassName</code> need to be specified.
+					</p>
+				</div>
+				<div class="option-examples">
+					<h4>
+						Code examples
+					</h4>
+					<dl class="option-examples-list">
+						<dt>
+							Initialize a map with the <code>interactWithTicketList</code> option specified.
+						</dt>
+						<dd>
+							<pre>
+<code>$( "#map-selector" ).fanvenues({ interactWithTicketList: true });</code>
+		</pre>
+						</dd>
+					</dl>
+				</div>
+			</li>
+			<li class="option" id="option-custom3d">
+				<div class="option-header">
+					<h3 class="option-name">
+						<a href="#option-custom3d">custom3d</a>
+					</h3>
+					<dl>
+						<dt class="option-type-label">
+							Type:
+						</dt>
+						<dd class="option-type">
+							String
+						</dd>
+						<dt class="option-default-label">
+							Default:
+						</dt>
+						<dd class="option-default">
+							'fanvenues'
+						</dd>
+					</dl>
+				</div>
+				<div class="option-description">
+					<p>
+						If you requested customized 3D images with your own logo in them, change this value to one provided to you by Fanvenues team or leave the default value to 'fanvenues' for default 3D images to load.
+					</p>
+				</div>
+				<div class="option-examples">
+					<h4>
+						Code examples
+					</h4>
+					<dl class="option-examples-list">
+						<dt>
+							Initialize a map with the <code>custom3d</code> option specified.
+						</dt>
+						<dd>
+							<pre>
+<code>$( "#map-selector" ).fanvenues({ custom3d: true });</code>
+		</pre>
+						</dd>
+					</dl>
+				</div>
+			</li>
+		</ul>
+  </div>
+  <div id="events">
+    <h2 class="top-header">Events</h2>
+    <ul class="events-list">
+
+<li class="event" id="event-fvmapReady">
+  <div class="event-header">
+    <h3 class="event-name"><a href="#event-fvmapReady">fvmapReady</a></h3>
+  </div>
+  <div class="event-description">
+    <p>This event is triggered when Fanvenues map is fully loaded and ready for use.</p>
+  </div>
+  <div class="event-examples">
+    <h4>Code examples</h4>
+    <dl class="event-examples-list">
+<dt>
+  Bind the <code>fvmapReady</code> event to handle the case when Fanvenues map is fully loaded and ready to be used.
+</dt>
+<dd>
+<pre><code>$( &quot;#map-selector&quot; ).bind('fvmapReady', function() {
+	$(this).replaceWith('Sorry! Map could not be found.');
+});</code></pre>
+</dd>
+
+    </dl>
+  </div>
+</li>
+
+      
+<li class="event" id="event-fvmapNotAvailable">
+  <div class="event-header">
+    <h3 class="event-name"><a href="#event-fvmapNotAvailable">fvmapNotAvailable</a></h3>
+  </div>
+  <div class="event-description">
+    <p>This event is triggered when Fanvenues map is not available.</p>
+  </div>
+  <div class="event-examples">
+    <h4>Code examples</h4>
+    <dl class="event-examples-list">
+<dt>
+  Bind the <code>fvmapNotAvailable</code> event to handle the case when Fanvenues map is not available. Return the appropriate static map if necessary.
+</dt>
+<dd>
+<pre><code>$( &quot;#map-selector&quot; ).bind('fvmapNotAvailable', function() {
+	$(this).replaceWith('Sorry! Map could not be found.');
+});</code></pre>
+</dd>
+
+    </dl>
+  </div>
+</li>
+
+
+<li class="event" id="event-fvmapEnlargeImage">
+  <div class="event-header">
+    <h3 class="event-name"><a href="#event-fvmapEnlargeImage">fvmapEnlargeImage</a></h3>
+  </div>
+  <div class="event-description">
+    <p>This event is triggered when the user right-clicks on a section (on map or ticket list).</p>
+  </div>
+  <div class="event-examples">
+    <h4>Code examples</h4>
+    <dl class="event-examples-list">
+<dt>
+  Bind the <code>fvmapEnlargeImage</code> event to handle the case when user right-clicks on a section. Returns the url of the large image and the name of the section. (fyi: Fanvenues uses slimbox2 to load the larger image with a nice overlay effect).
+</dt>
+<dd>
+<pre><code>$( &quot;#map-selector&quot; ).bind('fvmapEnlargeImage', function(obj, url, section) {
+	$.slimbox(url, section, {overlayOpacity: 0.5});
+});</code></pre>
+</dd>
+
+    </dl>
+  </div>
+</li>
+
+<li class="event" id="event-fvmapSectionFocus">
+  <div class="event-header">
+    <h3 class="event-name"><a href="#event-fvmapSectionFocus">fvmapSectionFocus</a></h3>
+  </div>
+  <div class="event-description">
+    <p>This event is triggered whenever the cursor is hovered over a section (on map or ticket list).</p>
+  </div>
+  <div class="event-examples">
+    <h4>Code examples</h4>
+    <dl class="event-examples-list">
+<dt>
+  Bind the <code>fvmapSectionFocus</code> event to handle the case when the cursor hovers over a section. Returns the url of the thumbnail image and the name of the section.
+</dt>
+<dd>
+<pre><code>$( &quot;#map-selector&quot; ).bind('fvmapSectionFocus', function(obj, url, section) {
+	// perform action with thumbnail image
+});</code></pre>
+</dd>
+
+    </dl>
+  </div>
+</li>
+
+<li class="event" id="event-fvmapSectionBlur">
+  <div class="event-header">
+    <h3 class="event-name"><a href="#event-fvmapSectionBlur">fvmapSectionBlur</a></h3>
+  </div>
+  <div class="event-description">
+    <p>This event is triggered whenever the cursor moves out from a section.</p>
+  </div>
+  <div class="event-examples">
+    <h4>Code examples</h4>
+    <dl class="event-examples-list">
+<dt>
+  Bind the <code>fvmapSectionBlur</code> event to handle the case when the cursor moves out from a section. Returns the url of the thumbnail image and the name of the section.
+</dt>
+<dd>
+<pre><code>$( &quot;#map-selector&quot; ).bind('fvmapSectionBlur', function(obj, url, section) {
+	// perform action with thumbnail image
+});</code></pre>
+</dd>
+
+    </dl>
+  </div>
+</li>
+
+<li class="event" id="event-fvmapSectionSelect">
+  <div class="event-header">
+    <h3 class="event-name"><a href="#event-fvmapSectionSelect">fvmapSectionSelect</a></h3>
+  </div>
+  <div class="event-description">
+    <p>This event is triggered whenever a section is selected. A section becomes selected when user clicks on an unselected section on the map.</p>
+  </div>
+  <div class="event-examples">
+    <h4>Code examples</h4>
+    <dl class="event-examples-list">
+<dt>
+  Bind the <code>fvmapSectionSelect</code> event to handle the case when a section gets selected. Returns the url of the thumbnail image and the name of the section selected.
+  If 'interactWithTicketList' is true, it also returns a list of tickets in this section from the ticket listing.
+</dt>
+<dd>
+<pre><code>$( &quot;#map-selector&quot; ).bind('fvmapSectionSelect', function(obj, url, section, *[tickets]) {
+	// perform action with thumbnail image
+	// this event can be used to allow user to compare views
+});</code></pre>
+</dd>
+
+    </dl>
+  </div>
+</li>
+<li class="event" id="event-fvmapSectionDeselect">
+  <div class="event-header">
+    <h3 class="event-name"><a href="#event-fvmapSectionDeselect">fvmapSectionDeselect</a></h3>
+  </div>
+  <div class="event-description">
+    <p>This event is triggered whenever a section is deselected. A section becomes deselected when user clicks on a selected section on the map.</p>
+  </div>
+  <div class="event-examples">
+    <h4>Code examples</h4>
+    <dl class="event-examples-list">
+<dt>
+  Bind the <code>fvmapSectionDeselect</code> event to handle the case when a section gets deselected. Returns the url of the thumbnail image and the name of the section.
+</dt>
+<dd>
+<pre><code>$( &quot;#map-selector&quot; ).bind('fvmapSectionDeselect', function(obj, url, section) {
+	// perform action with thumbnail image
+	// this event can be used to allow user to compare views
+});</code></pre>
+</dd>
+
+    </dl>
+  </div>
+</li>
+    </ul>
+  </div>
+  <div id="methods">
+    <h2 class="top-header">Methods</h2>
+    <ul class="methods-list">
+      
+<li class="method" id="method-setZoom">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-setZoom">setZoom</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature"><code>$( &quot;#map-selector&quot; ).fanvenues.setZoom( value )</code></dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Sets the zoom level for the selected map. Zoom levels range from 1 (closest) to 3 (furthest).</p>
+  </div>
+</li>
+
+<li class="method" id="method-filter">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-filter">filter</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature"><code>$( &quot;#map-selector&quot; ).fanvenues.filter( min-value, max-value )</code></dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Filters the map to show only sections having tickets within the filtered price range.</p>
+  </div>
+</li>
+
+<li class="method" id="method-focusSection">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-focusSection">focusSection</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature"><code>$( &quot;#map-selector&quot; ).fanvenues.focusSection( sectionName )</code></dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Sets focus on desired section.</p>
+  </div>
+</li>
+
+<li class="method" id="method-blurSection">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-blurSection">blurSection</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature"><code>$( &quot;#map-selector&quot; ).fanvenues.blurSection( sectionName )</code></dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Removes focus from desired section.</p>
+  </div>
+</li>
+
+<li class="method" id="method-clickSection">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-clickSection">clickSection</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature"><code>$( &quot;#map-selector&quot; ).fanvenues.clickSection( sectionName )</code></dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Selects or deselects desired section.</p>
+  </div>
+</li>
+
+<li class="method" id="method-getLargeImage">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-getLargeImage">getLargeImage</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature"><code>$( &quot;#map-selector&quot; ).fanvenues.getLargeImage( sectionName )</code></dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Returns the url to the enlarged image section view (large size should be set by option value '<b>lsize</b>').</p>
+  </div>
+</li>
+
+<li class="method" id="method-getSmallImage">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-getSmallImage">getSmallImage</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature"><code>$( &quot;#map-selector&quot; ).fanvenues.getSmallImage( sectionName )</code></dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Returns the url to the thumbnail image section view (thumbnail size should be set by option value '<b>ssize</b>').</p>
+  </div>
+</li>
+
+<li class="method" id="method-getAllSections">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-getAllSections">getAllSections</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature"><code>$( &quot;#map-selector&quot; ).fanvenues.getAllSections()</code></dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Returns an array of all available sections.</p>
+  </div>
+</li>
+
+
+
+    </ul>
+  </div>
+<div id="theming">
+	<h2 class="top-header">
+		Theming
+	</h2>
+	<p>
+		The jQuery Fanvenues plugin uses a combination of CSS and the jQuery UI CSS Framework to style its look and feel, including colors and background textures of the controls. We recommend using the ThemeRoller tool to create and download custom themes that are easy to build and maintain. Just include the jQuery UI css template in your html markup for styling to take effect.
+	</p>
+	<p>
+		Additionally, the following sample markup gives an example of how Fanvenues map can be styled: </p>
+		
+<code>
+<pre>	
+<b>/* map styling */</b>
+#fvmap { height:500px; width:500px; }
+
+<b>/* section styling */</b>
+#fvmap .section.focus { display: none; color: #cc3300; opacity:0.5; filter:alpha(opacity=50);	/* opacity for IE */ }
+#fvmap .section.available { display:none; color: #ff9900; opacity:0.25; filter:alpha(opacity=25);	/* opacity for IE */ }
+#fvmap .section.selected { display:none; color: #006699; opacity:0.50; filter:alpha(opacity=50);	/* opacity for IE */ }
+
+<b>/* map buttons styling */</b>
+#fvmap .zoomList { padding:10px; }
+#fvmap .actionList { padding:10px; }
+#fvmap .zoomList li { list-style:none; padding:3px; margin-bottom:2px; font-size:10px; font-family:Arial,sans-serif; text-align:center;}
+#fvmap .actionList li { list-style:none; padding:3px; margin-bottom:2px; font-size:10px; font-family:Arial,sans-serif; text-align:center;}
+#fvmap .zoomList li:hover { cursor:pointer; cursor:hand; }
+#fvmap .actionList li:hover { cursor:pointer; cursor:hand; }
+
+<b>/* map price slider styling */</b>
+#fvmap .priceFilter { padding-bottom:10px; padding-left:25px; width:180px; height:10px; }
+#fvmap .priceFilter p { font-family:Arial,sans-serif; font-size:10px; padding:0; margin:0; }
+#fvmap .priceSlider{ width:150px; height:5px; }
+#fvmap .priceSliderAmount { font-size:10px; width:80px; border:0; color:#f6931f; font-weight:bold; }
+
+<b>/* ticket list styling (DIV-based ticket list)*/</b>
+#tixlist div.active { color:#ffffff; background-color: #d5896a; }
+#tixlist div.active:hover { cursor:pointer; cursor:hand; }
+
+<b>/* ticket list styling (TABLE-based ticket list)*/</b>
+#ticket-list tr td.active { background-color: #D6896C; }
+#ticket-list tr td.selected { background-color: #D6896C; }	
+	
+</pre></code>
+</div>
+
+
+<div id="download">
+	<h2 class="top-header">
+		Download
+	</h2>
+	<p>
+		Fanvenues jQuery plugin v2.2.3 (compressed - 14Kb): <a href="scripts/fanvenues-2.2.3.zip">download</a><br/>
+	</p>
+	<p class="theme-note">
+		<strong>Note: In order for Fanvenues map to load properly, we need to approve your domain name beforehand. Please send us a request and we'll let you know once you are able to use the plugin.</strong>
+	</p>
+</div>
+
+
+
+</div>
+
+<div id="jq-footer" class="jq-clearfix">
+	<div id="jq-credits">
+		<p id="jq-copyright">
+			&copy 2010 <a href="http://www.fanvenues.com/">Fanvenues.com</a>
+		</p>
+	</div>
+</div><!-- /#footer -->
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$('#fvmap').fanvenues({
+			mapSet:'fv',
+			mapId:'1004',
+			interactWithTicketList: false,
+			ticketList:{
+				'items':[
+					{id:'1231',section:'201',row:'10',price:'110.00',notes:'n/a'},
+					{id:'1232',section:'201',row:'12',price:'24.00',notes:'n/a'},
+					{id:'1233',section:"CL 202'",row:'4',price:'150.00',notes:'n/a'},
+					{id:'1234',section:'117',row:'4',price:'210.00',notes:'n/a'},
+					{id:'1235',section:'223',row:'4',price:'110.00',notes:'n/a'},
+					{id:'1236',section:'316',row:'4',price:'115.00',notes:'n/a'},
+					{id:'1237',section:'107',row:'4',price:'300.00',notes:'n/a'},
+					{id:'1238',section:'101',row:'4',price:'320.00',notes:'n/a'},
+					{id:'1239',section:'213',row:'4',price:'80.00',notes:'n/a'},
+					{id:'1240',section:'307',row:'4',price:'100.00',notes:'n/a'},
+					{id:'1241',section:'318',row:'4',price:'130.00',notes:'n/a'},
+					{id:'1242',section:'112',row:'4',price:'510.00',notes:'n/a'},
+					{id:'1243',section:'203',row:'4',price:'110.00',notes:'n/a'}					
+				]
+			}
+		})
+		.bind('fvmapNotAvailable', function() {
+	     	$(this).replaceWith('Sorry! Map could not be found.');
+		})
+		.bind('fvmapEnlargeImage', function(obj, largeImageUrl, section) {
+			$.slimbox(largeImageUrl, section, {overlayOpacity: 0.5});
+		})
+		.bind('fvmapSectionFocus', function(obj, smallImageUrl, section) {
+			//console.debug(smallImageUrl, section);
+			$('#thumbnail')
+				.html('<img src="'+smallImageUrl+'" />');
+		})
+		.bind('fvmapSectionBlur', function(obj, smallImageUrl, section) {
+			// console.debug('fvmapSectionBlur:', smallImageUrl, section);			
+		})
+	});
+	
+	$('#overview-example').tabs();
+	$("#docs-content").css('z-index','0');
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+	try {
+		var pageTracker = _gat._getTracker("UA-7312697-1");
+		pageTracker._trackPageview();
+	} catch(err) {}</script>
+	</body>
+</html>
+

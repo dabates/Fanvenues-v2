@@ -3,8 +3,10 @@
  Copyright (c) 2010 Peekspy Pte Ltd <http://www.peekspy.com>
  Author: Oliver Oxenham
  Date created: 2010-08-02
- Date updated: 2011-09-09
- Latest version: 2.2.3
+ Date updated: 2011-09-13
+ Latest version: 2.2.4
+ 2.2.4 : resolved logical bug in price filtering within sections.
+ 		 prevent filtered out sections from being selected.
  2.2.3 : resolved price filtering bug where sections filtered became unfiltered after a mouseout event.
  		 changed use of 'for..in' to standard for-loop to loop through arrays.
  2.2.2 : resolved bug in IE9 ajax requests preventing calls to fanvenues server because of missing 'onprogress' function.
@@ -598,13 +600,18 @@
 							$("#"+el.attr('id')).trigger("fvmapSectionDeselect", [fvTicketList[id].pic+"?size="+opts.ssize, fvTicketList[id].name]);
 						}
 						else {
-							sectionSelected = [id].concat(sectionSelected);			// section is not selected. adding section to array.
-							if (opts.interactWithTicketList) {
-								var ticketsInSection = fvTicketList[id].sections;
-								$("#"+el.attr('id')).trigger("fvmapSectionSelect", [fvTicketList[id].pic+"?size="+opts.ssize, fvTicketList[id].name, ticketsInSection]);
+							if ((parseFloat(fvTicketList[id].minPrice) > parseFloat(maxP)) || (parseFloat(fvTicketList[id].maxPrice) < parseFloat(minP))) {
+								// this section is currently filtered out so user can't select it
 							}
 							else {
-								$("#"+el.attr('id')).trigger("fvmapSectionSelect", [fvTicketList[id].pic+"?size="+opts.ssize, fvTicketList[id].name]);
+								sectionSelected = [id].concat(sectionSelected);			// section is not selected. adding section to array.
+								if (opts.interactWithTicketList) {
+									var ticketsInSection = fvTicketList[id].sections;
+									$("#"+el.attr('id')).trigger("fvmapSectionSelect", [fvTicketList[id].pic+"?size="+opts.ssize, fvTicketList[id].name, ticketsInSection]);
+								}
+								else {
+									$("#"+el.attr('id')).trigger("fvmapSectionSelect", [fvTicketList[id].pic+"?size="+opts.ssize, fvTicketList[id].name]);
+								}
 							}
 						}
 						if (opts.interactWithTicketList)
@@ -834,13 +841,13 @@
 			minP = min; maxP = max;
 			if ($.inArray(t, sectionSelected) < 0) {
 				if (section.section != undefined) {		// this ticket is on map
-					if ((parseFloat(section.minPrice) >= parseFloat(min)) && (parseFloat(section.maxPrice) <= parseFloat(max))) {
-						// show polygon on map
-						showPolygon(sectionManager[t][0]);
+					if ((parseFloat(section.minPrice) > parseFloat(max)) || (parseFloat(section.maxPrice) < parseFloat(min))) {
+						// hide polygon on map
+						hidePolygon(sectionManager[t][0]);											
 					}
 					else {
-						// hide polygon on map
-						hidePolygon(sectionManager[t][0]);					
+						// show polygon on map
+						showPolygon(sectionManager[t][0]);						
 					}
 				}
 			}

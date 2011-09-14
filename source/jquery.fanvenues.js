@@ -3,8 +3,9 @@
  Copyright (c) 2010 Peekspy Pte Ltd <http://www.peekspy.com>
  Author: Oliver Oxenham
  Date created: 2010-08-02
- Date updated: 2011-09-13
- Latest version: 2.2.4
+ Date updated: 2011-09-14
+ Latest version: 2.2.5
+ 2.2.5 : added public function "getOriginalSectionNamesFor". Returns all original section names for a specific section.
  2.2.4 : resolved logical bug in price filtering within sections.
  		 prevent filtered out sections from being selected.
  2.2.3 : resolved price filtering bug where sections filtered became unfiltered after a mouseout event.
@@ -582,13 +583,13 @@
 		                	};
 		                	this.setOptions(thisOptions);
 				}
-				$("#"+el.attr('id')).trigger("fvmapSectionFocus", [fvTicketList[id].pic+"?size=" + opts.ssize, fvTicketList[id].name]);
+				$("#"+el.attr('id')).trigger("fvmapSectionFocus", [fvTicketList[id].pic+"?size=" + opts.ssize, fvTicketList[id].name, id]);
 	            });
 				
 				// polygon right-click
 				google.maps.event.addListener(polygon, "rightclick",
 				function() {
-					$("#"+el.attr('id')).trigger("fvmapEnlargeImage", [fvTicketList[id].pic+"?size=" + opts.lsize, fvTicketList[id].name]);
+					$("#"+el.attr('id')).trigger("fvmapEnlargeImage", [fvTicketList[id].pic+"?size=" + opts.lsize, fvTicketList[id].name, id]);
 				});
 				
 				// polygon left-click
@@ -597,7 +598,7 @@
 					if (fvTicketList[id].section != undefined) {		// do not select sections that do not have tickets
 						if ($.inArray(id, sectionSelected) > -1) {		// section is selected. remove from array.
 							sectionSelected = $.grep(sectionSelected, function(i) { return i != id; });	// removing section from array
-							$("#"+el.attr('id')).trigger("fvmapSectionDeselect", [fvTicketList[id].pic+"?size="+opts.ssize, fvTicketList[id].name]);
+							$("#"+el.attr('id')).trigger("fvmapSectionDeselect", [fvTicketList[id].pic+"?size="+opts.ssize, fvTicketList[id].name, id]);
 						}
 						else {
 							if ((parseFloat(fvTicketList[id].minPrice) > parseFloat(maxP)) || (parseFloat(fvTicketList[id].maxPrice) < parseFloat(minP))) {
@@ -607,10 +608,10 @@
 								sectionSelected = [id].concat(sectionSelected);			// section is not selected. adding section to array.
 								if (opts.interactWithTicketList) {
 									var ticketsInSection = fvTicketList[id].sections;
-									$("#"+el.attr('id')).trigger("fvmapSectionSelect", [fvTicketList[id].pic+"?size="+opts.ssize, fvTicketList[id].name, ticketsInSection]);
+									$("#"+el.attr('id')).trigger("fvmapSectionSelect", [fvTicketList[id].pic+"?size="+opts.ssize, fvTicketList[id].name, id, ticketsInSection]);
 								}
 								else {
-									$("#"+el.attr('id')).trigger("fvmapSectionSelect", [fvTicketList[id].pic+"?size="+opts.ssize, fvTicketList[id].name]);
+									$("#"+el.attr('id')).trigger("fvmapSectionSelect", [fvTicketList[id].pic+"?size="+opts.ssize, fvTicketList[id].name, id]);
 								}
 							}
 						}
@@ -922,6 +923,15 @@
 		}
 	};
 
+	$.fn.fanvenues.getOriginalSectionNamesFor = function (section) {
+		var list = [];
+		for (s in sectionTranslator) {
+			if (sectionTranslator[s] == section) {
+				list.push(s);
+			}
+		}
+		return list;
+	};
 	
 	$.fn.fanvenues.getAllSections = function () {
 		var allSections = [];

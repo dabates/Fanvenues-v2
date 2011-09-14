@@ -47,7 +47,7 @@
 		<div id="column-content">
 	<div id="docs-content">
 		<a name="top" id="top"></a>
-		<h1 class="firstHeading">FANVENUES / API / 2.2.4</h1>
+		<h1 class="firstHeading">FANVENUES / API / 2.2.5</h1>
 		<div id="bodyContent">
 			
 <ul class="UIAPIPlugin-toc">
@@ -70,8 +70,9 @@
 				</p>
 				<pre>
  Date created: 2010-08-02
- Date updated: 2011-09-13
- Latest version: 2.2.4
+ Date updated: 2011-09-14
+ Latest version: 2.2.5
+ 2.2.5 : added public function "getOriginalSectionNamesFor". Returns all original section names for a specific section.
  2.2.4 : resolved logical bug in price filtering within sections.
  		 prevent filtered out sections from being selected.
  2.2.3 : resolved price filtering bug where sections filtered became unfiltered after a mouseout event.
@@ -1289,6 +1290,20 @@ $(&#39;#fvmap&#39;).fanvenues({
   </div>
 </li>
 
+<li class="method" id="method-getOriginalSectionNamesFor">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-getOriginalSectionNamesFor">getOriginalSectionNamesFor</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature"><code>$( &quot;#map-selector&quot; ).fanvenues.getOriginalSectionNamesFor( sectionName )</code></dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Returns a list of original section names for specific Fanvenues section passed as parameter.</p>
+  </div>
+</li>
+
+
 <li class="method" id="method-getAllSections">
   <div class="method-header">
     <h3 class="method-name"><a href="#method-getAllSections">getAllSections</a></h3>
@@ -1357,7 +1372,7 @@ $(&#39;#fvmap&#39;).fanvenues({
 		Download
 	</h2>
 	<p>
-		Fanvenues jQuery plugin v2.2.4 (compressed - 14Kb): <a href="scripts/fanvenues-2.2.4.zip">download</a><br/>
+		Fanvenues jQuery plugin v2.2.5 (compressed - 14Kb): <a href="http://www.fanvenues.com/scripts/fanvenues-2.2.5.zip">download</a><br/>
 	</p>
 	<p class="theme-note">
 		<strong>Note: In order for Fanvenues map to load properly, we need to approve your domain name beforehand. Please send us a request and we'll let you know once you are able to use the plugin.</strong>

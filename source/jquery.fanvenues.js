@@ -3,8 +3,9 @@
  Copyright (c) 2010 Peekspy Pte Ltd <http://www.peekspy.com>
  Author: Oliver Oxenham
  Date created: 2010-08-02
- Date updated: 2011-09-14
- Latest version: 2.2.5
+ Date updated: 2011-09-16
+ Latest version: 2.2.6
+ 2.2.6 : updated logical bug in price filtering within sections on mouseout event.
  2.2.5 : added public function "getOriginalSectionNamesFor". Returns all original section names for a specific section.
  2.2.4 : resolved logical bug in price filtering within sections.
  		 prevent filtered out sections from being selected.
@@ -537,25 +538,38 @@
 						var max = maxP;
 						if (max == 405)
 							max = 99999;
-						if ((fvTicketList[id].minPrice >= min) && (fvTicketList[id].maxPrice <= max)) {
-							thisOptions = {
-			                    strokeColor: polyStrokeColor,
-			                    strokeOpacity: polyStrokeOpacity,
-			                    strokeWeight: polyStrokeWeight,
-			                    fillColor: polyTixFillColor,
-			                    fillOpacity: polyTixFillOpacity
-			                }
-			                this.setOptions(thisOptions);
+						//if ((fvTicketList[id].minPrice >= min) && (fvTicketList[id].maxPrice <= max)) {
+						if (fvTicketList[id].minPrice !== undefined) {	// only look at sections with tickets
+							if ((parseFloat(fvTicketList[id].minPrice) > parseFloat(maxP)) || (parseFloat(fvTicketList[id].maxPrice) < parseFloat(minP))) {
+				                thisOptions = {
+				                    strokeColor: polyStrokeColor,
+				                    strokeOpacity: polyStrokeOpacity,
+				                    strokeWeight: polyStrokeWeight,
+				                    fillColor: polyFillColor,
+				                    fillOpacity: polyFillOpacity
+				                }
+				                this.setOptions(thisOptions);
+							}
+							else {
+								thisOptions = {
+				                    strokeColor: polyStrokeColor,
+				                    strokeOpacity: polyStrokeOpacity,
+				                    strokeWeight: polyStrokeWeight,
+				                    fillColor: polyTixFillColor,
+				                    fillOpacity: polyTixFillOpacity
+				                }
+				                this.setOptions(thisOptions);
+							}
 						}
 						else {
-			                thisOptions = {
-			                    strokeColor: polyStrokeColor,
-			                    strokeOpacity: polyStrokeOpacity,
-			                    strokeWeight: polyStrokeWeight,
-			                    fillColor: polyFillColor,
-			                    fillOpacity: polyFillOpacity
-			                }
-			                this.setOptions(thisOptions);
+				                thisOptions = {
+				                    strokeColor: polyStrokeColor,
+				                    strokeOpacity: polyStrokeOpacity,
+				                    strokeWeight: polyStrokeWeight,
+				                    fillColor: polyFillColor,
+				                    fillOpacity: polyFillOpacity
+				                }
+				                this.setOptions(thisOptions);							
 						}
 					}
 					$("#"+el.attr('id')).trigger("fvmapSectionBlur", [fvTicketList[id].pic + "?size=" + opts.ssize, fvTicketList[id].name]);
@@ -564,24 +578,24 @@
 	            google.maps.event.addListener(polygon, "mousemove",
 	            function(e) {		
 				if ($.inArray(id, sectionSelected) > -1) {
-		                	thisOptions = {
-		                    		strokeColor: polyStrokeColor,
-		                    		strokeOpacity: polyStrokeOpacity,
-		                    		strokeWeight: polyStrokeWeight,
-		                    		fillColor: polyTixSelectedFillColor,
-		                    		fillOpacity: polyTixSelectedFillOpacity
-		                	};
-		                	this.setOptions(thisOptions);					
+                	thisOptions = {
+                    		strokeColor: polyStrokeColor,
+                    		strokeOpacity: polyStrokeOpacity,
+                    		strokeWeight: polyStrokeWeight,
+                    		fillColor: polyTixSelectedFillColor,
+                    		fillOpacity: polyTixSelectedFillOpacity
+                	};
+                	this.setOptions(thisOptions);					
 				}				
 				else {
-		                	thisOptions = {
-		                    		strokeWeight: polyStrokeWeight,
-		                    		strokeOpacity: polyStrokeOpacity,
-		                    		strokeColor: polyStrokeColor,
-		                    		fillColor: polyHoverFillColor,
-		                    		fillOpacity: polyHoverFillOpacity
-		                	};
-		                	this.setOptions(thisOptions);
+                	thisOptions = {
+                    		strokeWeight: polyStrokeWeight,
+                    		strokeOpacity: polyStrokeOpacity,
+                    		strokeColor: polyStrokeColor,
+                    		fillColor: polyHoverFillColor,
+                    		fillOpacity: polyHoverFillOpacity
+                	};
+                	this.setOptions(thisOptions);
 				}
 				$("#"+el.attr('id')).trigger("fvmapSectionFocus", [fvTicketList[id].pic+"?size=" + opts.ssize, fvTicketList[id].name, id]);
 	            });

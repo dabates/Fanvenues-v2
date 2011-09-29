@@ -3,10 +3,11 @@
  Copyright (c) 2010 Peekspy Pte Ltd <http://www.peekspy.com>
  Author: Oliver Oxenham
  Date created: 2010-08-02
- Date updated: 2011-09-16
- Latest version: 2.2.6
+ Date updated: 2011-09-29
+ Latest version: 2.2.7
+ 2.2.7 : added public method "getLayoutId" to retrieve the current fanvenues layout ID.
  2.2.6 : updated logical bug in price filtering within sections on mouseout event.
- 2.2.5 : added public function "getOriginalSectionNamesFor". Returns all original section names for a specific section.
+ 2.2.5 : added public method "getOriginalSectionNamesFor". Returns all original section names for a specific section.
  2.2.4 : resolved logical bug in price filtering within sections.
  		 prevent filtered out sections from being selected.
  2.2.3 : resolved price filtering bug where sections filtered became unfiltered after a mouseout event.
@@ -947,6 +948,10 @@
 		return list;
 	};
 	
+	$.fn.fanvenues.getLayoutId = function () {
+		return layout_id;
+	};
+
 	$.fn.fanvenues.getAllSections = function () {
 		var allSections = [];
 		for (i in fvTicketList) {
